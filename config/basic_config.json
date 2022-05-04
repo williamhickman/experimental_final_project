@@ -1,0 +1,13 @@
+{"mtree_type": "mes_simulation_description",
+    "name":"WH_Final_Project",
+    "id": "1",
+    "environment": "environment.TaxEnvironment",
+    "institution": "institution.TaxInstitution",
+    "number_of_runs": 1,
+    "agents": [{"agent_name": "agent.TaxAgent", "number": 5}],
+    "properties": {
+      "number_of_rounds": 1,
+      "payment_per_task": 20,
+      "number_of_agents":5}
+    
+  }

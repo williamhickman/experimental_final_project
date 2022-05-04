@@ -1,0 +1,53 @@
+Simulation Configuration: 	{
+ "mtree_type": "mes_simulation_description",
+ "name": "WH_Final_Project",
+ "id": "1",
+ "description": null,
+ "environment": "environment.TaxEnvironment",
+ "institutions": [
+  {
+   "institution": "institution.TaxInstitution"
+  }
+ ],
+ "number_of_runs": 1,
+ "agents": [
+  {
+   "agent_name": "agent.TaxAgent",
+   "number": 5
+  }
+ ],
+ "properties": {
+  "number_of_rounds": 1,
+  "payment_per_task": 20,
+  "number_of_agents": 5
+ },
+ "data_logging": null,
+ "source_hash": "daf04ad9549e0e9a3c1361d53d113283",
+ "simulation_run_id": "basic_config-2022_05_03-05_09_22_PM",
+ "mes_directory": "/auctions"
+}
+1651597762.4907632	Environment: Exited directive: logger_setup
+1651597762.5016663	Environment: About to enter directive: simulation_properties
+1651597762.50244	Environment: Exited directive: simulation_properties
+1651597762.5096743	Environment: About to enter directive: setup_institution
+1651597762.5439224	Environment: Exited directive: setup_institution
+1651597762.551971	Environment: About to enter directive: setup_agents
+1651597762.7469652	Environment: Exited directive: setup_agents
+1651597762.9405107	Environment: About to enter directive: start_environment
+1651597763.0063796	MES ENVIRONMENT CRASHING - EXCEPTION FOLLOWS 
+	Source Message: <Message Sender: experimenter, Recipients: , Directive: start_environment, Content: None>
+	Error Type: <class 'AttributeError'>
+	Error: 'TaxEnvironment' object has no attribute 'state'
+
+	Trace Output: 
+	  File "/mtree/mTree/microeconomic_system/environment.py", line 96, in receiveMessage
+    directive_handler(self, message)
+
+	  File "environment.py", line 35, in start_environment
+
+
+1651597764.5296602	Agent (agent.TaxAgent 2: Exited directive: simulation_properties
+1651597764.5343754	Agent (agent.TaxAgent 1: Exited directive: simulation_properties
+1651597764.550183	Agent (agent.TaxAgent 3: Exited directive: simulation_properties
+1651597764.5833318	Agent (agent.TaxAgent 4: Exited directive: simulation_properties
+1651597764.5995696	Agent (agent.TaxAgent 5: Exited directive: simulation_properties
