@@ -13,7 +13,6 @@ import datetime
 @directive_enabled_class
 class TaxEnvironment(Environment):
     def __init__(self):
-        self.number_of_rounds=10
         self.tax_rates = [0.0,0.25,0.5,0.75,1.0]
 
     def send_message(self, directive, receiver, payload):
@@ -31,14 +30,16 @@ class TaxEnvironment(Environment):
     @directive_decorator("start_environment")
     def start_environment(self, message: Message):
         # get the number of rounds from the config file
-        self.state['number_of_rounds'] = self.get_property("number_of_rounds")
-        self.state['number_of_agents'] = self.get_property("number_of_agents")
-        self.state['payment_per_task'] = self.get_property("payment_per_task")
+        self.number_of_rounds = self.get_property("number_of_rounds")
+        self.number_of_agents = self.get_property("number_of_agents")
+        self.payment_per_task = self.get_property("payment_per_task")
         self.choose_tax_rate()
-        institution_payload = {'number_of_rounds': self.state['number_of_rounds'],
-                                 'number_of_agents': self.state['number_of_agents'],
-                                 'tax_rate': self.state['tax_rate'],
-                                 'payment_per_task':self.state['payment_per_task']}
+        self.log_data(f"The selected tax rate is {self.tax_rate}")
+        self.shutdown_mes()
+        institution_payload = {'number_of_rounds': self.number_of_rounds,
+                                 'number_of_agents': self.number_of_agents,
+                                 'tax_rate': self.tax_rate,
+                                 'payment_per_task':self.payment_per_task}
         self.send_message("init_institution", 
                           "institution.TaxInstitution 1",
                            institution_payload)
@@ -48,7 +49,7 @@ class TaxEnvironment(Environment):
     @directive_decorator("choose_tax_rate")
     def choose_tax_rate(self, message: Message):
         # randomly select a tax rate from a list of tax rates
-        self.state['tax_rate'] = random.choice(self.tax_rates)
+        self.tax_rate = random.choice(self.tax_rates)
     
 
     """@directive_decorator("report_previous_round")

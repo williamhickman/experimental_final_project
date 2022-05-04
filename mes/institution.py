@@ -71,7 +71,7 @@ class TaxInstitution(Institution):
             self.round_id -= 1
             print(f"INSTITUTION: Starting Round {self.round_id}")
             for agent_id in self.address_book.get_addresses():
-                self.send_message("start_round", agent, self.round_id, False)
+                self.send_message("start_round", agent_id, self.round_id, False)
             elif:
                 self.round_id == self.number_of_rounds:
                     self.complete_experiment()
