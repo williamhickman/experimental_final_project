@@ -57,12 +57,12 @@ class TaxInstitution(Institution):
         """
         self.environment_address = message.get_sender() #saves the environment address 
         init_dict = message.get_payload()
+        self.log_data(f"The environment says that the number of agents is {init_dict['number_of_agents']}")
         self.number_of_rounds = init_dict['number_of_rounds']
         self.number_of_agents = init_dict['number_of_agents']
         self.tax_rate = init_dict['tax_rate']
         self.payment_per_task = init_dict['payment_per_task']
-        self.random_output = self.select_random_output()
-
+        self.log_data(f"Number of rounds is {self.number_of_rounds}. Number of agents is {self.number_of_agents}. Tax rate is {self.tax_rate}. Payment per task is {self.payment_per_task}")
         self.send_message("institution_confirm_init", "Environment", None, True)
     
     @directive_decorator("start_round")
@@ -72,15 +72,17 @@ class TaxInstitution(Institution):
             print(f"INSTITUTION: Starting Round {self.round_id}")
             for agent_id in self.address_book.get_addresses():
                 self.send_message("start_round", agent_id, self.round_id, False)
-            elif:
-                self.round_id == self.number_of_rounds:
-                    self.complete_experiment()
+        elif self.round_id == self.number_of_rounds:
+             self.complete_experiment()
+        else:
+            self.log_data(f"INSTITUTION: Error starting round {self.round_id}")
         
 
     @directive_decorator("request_random_output")
     def request_random_output(self, message: Message):
         agent_id = message.get_payload() #saves the agent short_name 
         self.log_message(f"Random output requested by {agent_id}")
+        self.random_output=self.select_random_output()
         self.send_message("receive_random_output", agent_id, self.random_output, False)
   
    

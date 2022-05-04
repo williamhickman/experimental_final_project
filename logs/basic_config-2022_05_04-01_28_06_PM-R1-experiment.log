@@ -1,0 +1,54 @@
+Simulation Configuration: 	{
+ "mtree_type": "mes_simulation_description",
+ "name": "WH_Final_Project",
+ "id": "1",
+ "description": null,
+ "environment": "environment.TaxEnvironment",
+ "institutions": [
+  {
+   "institution": "institution.TaxInstitution"
+  }
+ ],
+ "number_of_runs": 1,
+ "agents": [
+  {
+   "agent_name": "agent.TaxAgent",
+   "number": 5
+  }
+ ],
+ "properties": {
+  "number_of_rounds": 1,
+  "payment_per_task": 20,
+  "number_of_agents": 5,
+  "tax_rate": 0.75
+ },
+ "data_logging": null,
+ "source_hash": "723e8d97e08b0a05bc1172e69a36658e",
+ "simulation_run_id": "basic_config-2022_05_04-01_28_06_PM",
+ "mes_directory": "/auctions"
+}
+1651670886.9312732	Environment: Exited directive: logger_setup
+1651670886.9514613	Environment: About to enter directive: simulation_properties
+1651670886.9548972	Environment: Exited directive: simulation_properties
+1651670886.973244	Environment: About to enter directive: setup_institution
+1651670887.032057	Environment: Exited directive: setup_institution
+1651670887.0401235	Environment: About to enter directive: setup_agents
+1651670887.298078	Environment: Exited directive: setup_agents
+1651670887.459628	Environment: About to enter directive: start_environment
+1651670887.5120533	MES ENVIRONMENT CRASHING - EXCEPTION FOLLOWS 
+	Source Message: <Message Sender: experimenter, Recipients: , Directive: start_environment, Content: None>
+	Error Type: <class 'TypeError'>
+	Error: shutdown_mes() missing 1 required positional argument: 'message'
+
+	Trace Output: 
+	  File "/mtree/mTree/microeconomic_system/environment.py", line 96, in receiveMessage
+    directive_handler(self, message)
+
+	  File "environment.py", line 39, in start_environment
+
+
+1651670889.1054504	Agent (agent.TaxAgent 1: Exited directive: simulation_properties
+1651670889.112021	Agent (agent.TaxAgent 2: Exited directive: simulation_properties
+1651670889.123865	Agent (agent.TaxAgent 3: Exited directive: simulation_properties
+1651670889.158008	Agent (agent.TaxAgent 4: Exited directive: simulation_properties
+1651670889.163584	Agent (agent.TaxAgent 5: Exited directive: simulation_properties
