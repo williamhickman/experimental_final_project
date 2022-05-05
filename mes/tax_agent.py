@@ -54,11 +54,10 @@ class TaxAgent(Agent):
         self.institution_address = message.get_sender()
         self.round_id = message.get_payload()
         self.send_message(f"agent_confirm_start_round_{self.round_id}", "Environment",self.short_name, True)
-        if round_id == 1:
-            self.choose_effort()
+        #if round_id == 1:
+        self.choose_effort()
         # add in an else statement for all rounds other than the first
         
-    @directive_decorator("choose_effort")
     def choose_effort(self, message: Message):
         self.send_message("request_random_output", "Institution", self.short_name, False)
 

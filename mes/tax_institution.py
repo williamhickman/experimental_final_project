@@ -20,7 +20,6 @@ class TaxInstitution(Institution):
         self.effort_history = []
         self.pretax_history= []
         self.posttax_history= []
-        self.round_id=[]
         self.number_of_agents= None
 
 
@@ -44,38 +43,28 @@ class TaxInstitution(Institution):
 
     @directive_decorator("init_institution")
     def init_institution(self, message: Message):
-        """
-        Messages Handled :
-        - init_institution
-            sender: Environment 
-            payload: dict = {'starting_bid': int, 'starting_ask': int}
-
-        Messages Sent: 
-        - institution_confirm_init
-            receiver: Environment, 
-            payload:  None
-        """
         self.environment_address = message.get_sender() #saves the environment address 
         init_dict = message.get_payload()
-        self.log_data(f"The environment says that the number of agents is {init_dict['number_of_agents']}")
+        #self.log_data(f"The environment says that the number of agents is {init_dict['number_of_agents']}")
         self.number_of_rounds = init_dict['number_of_rounds']
         self.number_of_agents = init_dict['number_of_agents']
         self.tax_rate = init_dict['tax_rate']
         self.payment_per_task = init_dict['payment_per_task']
-        self.log_data(f"Number of rounds is {self.number_of_rounds}. Number of agents is {self.number_of_agents}. Tax rate is {self.tax_rate}. Payment per task is {self.payment_per_task}")
+        self.round_id=0
+        #self.log_data(f"Number of rounds is {self.number_of_rounds}. Number of agents is {self.number_of_agents}. Tax rate is {self.tax_rate}. Payment per task is {self.payment_per_task}")
         self.send_message("institution_confirm_init", "Environment", None, True)
     
     @directive_decorator("start_round")
     def start_round(self, message: Message):
-        if self.round_id > 0:
-            self.round_id -= 1
+        self.agent_addresses = message.get_payload()
+        self.address_book.merge_addresses(self.agent_addresses)
+        if self.round_id >= 0 & self.round_id<self.number_of_rounds:
+            self.round_id += 1
             print(f"INSTITUTION: Starting Round {self.round_id}")
-            for agent_id in self.address_book.get_addresses():
+            for agent_id in self.address_book:
                 self.send_message("start_round", agent_id, self.round_id, False)
-        elif self.round_id == self.number_of_rounds:
-             self.complete_experiment()
         else:
-            self.log_data(f"INSTITUTION: Error starting round {self.round_id}")
+            complete_experiment()
         
 
     @directive_decorator("request_random_output")
@@ -85,8 +74,6 @@ class TaxInstitution(Institution):
         self.random_output=self.select_random_output()
         self.send_message("receive_random_output", agent_id, self.random_output, False)
   
-   
-    @directive_decorator("select_random_output")
     def select_random_output(self, message: Message):
         self.random_output=random.randint(0, 100)
 
@@ -100,35 +87,27 @@ class TaxInstitution(Institution):
             self.log_data("ROUND COMPLETE")
             self.calculate_posttax_earnings()
             self.start_round()
-            else:
-                self.log_data("ROUND INCOMPLETE. WAITING FOR MORE OUTPUTS.")
+        else:
+            self.log_data("ROUND INCOMPLETE. WAITING FOR MORE OUTPUTS.")
 
-    
-        
-    @directive_decorator("calculate_posttax_earnings")
-    def calculate_posttax_earnings(self, message: Message):
+    def calculate_posttax_earnings(self):
         self.total_taxes_collected = []
         self.taxes_collected_this_round=[]
         for agent_output, self.round_id in self.effort_history:
             self.taxes_collected_this_round.append(agent_output*self.tax_rate)
-        self.tax_in_round=self.total_taxes_collected.append(sum(taxes_collected_this_round), self.round_id))
+        self.tax_in_round=sum(self.taxes_collected_this_round)
         self.sent_back_to_each_participant=self.tax_in_round/self.number_of_agents    
         self.send_posttax_earnings_to_agents()
        # need to add more here. add up all taxes paid by each agent in each round, then distribute this amount evenly to all the agents
 
-    @directive_decorator("send_posttax_earnings_to_agents")
-    def send_posttax_earnings_to_agents(self, message: Message):
-        for agent_output, agent_id, self.round_id in self.pretax_history:
+    def send_posttax_earnings_to_agents(self):
+        for agent_output, agent_id, self.round_id in self.effort_history:
             self.send_message("receive_posttax_earnings", agent_id, (agent_output*self.payment_per_task+self.sent_back_to_each_participant) , False)
         self.log_data("ROUND COMPLETE")
-        self.complete_round()
 
-    @directive_decorator("complete_round")
-    def complete_round(self, message: Message):
-        self.start_round()
 
-    @directive_decorator("end_period")
-    def end_period(self, message: Message):
-        pass
+    
+    def complete_experiment(self):
+        self.shutdown_mes()
 
    

@@ -30,8 +30,7 @@ class TaxEnvironment(Environment):
     @directive_decorator("start_environment")
     def start_environment(self, message: Message):
         # get the number of rounds from the config file
-        self.institution_address = self.address_book.select_addresses({"address_type": "institution"})
-        self.log_message(self.institution_address)
+        self.institution_address = "tax_institution.TaxInstitution 1")
         self.number_of_rounds = self.get_property("number_of_rounds")
         self.number_of_agents = self.get_property("number_of_agents")
         self.payment_per_task = self.get_property("payment_per_task")
@@ -108,4 +107,4 @@ class TaxEnvironment(Environment):
 
     @directive_decorator("env_end_period")
     def env_end_period(self, message: Message):
-    self.shutdown_mes()
+        self.shutdown_mes()
